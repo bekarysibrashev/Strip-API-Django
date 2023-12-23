@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <h1>{{ item.name }}</h1>
+        <p>{{ item.description }}</p>
+        <hr>
+        <h3>Price: {{ item.price }}</h3>
+        <button value="{{ item.id }}" id="buy">BUY</button>
+        <button value="{{ item.id }}" id="add">ADD TO ORDER</button>
+    </div>
+
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+    var stripe = Stripe('pk_test_51OQGBgCLksmMuKnYAncD4YDOvDURDO0RO1Hyf4skuDo71bzSazmpjLObrjk4Fu97KQWFi1tfxXipWboDD6aOr45Q00zM3PvOdJ');
+        
+    document.getElementById('buy').addEventListener('click', function(event){
+        fetch(`/buy/${event.target.value}/`, {
+            method: 'GET'
+        })
+        .then(function(response){
+            return response.json();
+        })
+        .then(function(session){
+            console.log(session.session_id)
+            return stripe.redirectToCheckout({ sessionId: session.session_id })
+        })
+        .catch(function(error){
+            console.error('error:',error)
+        })
+
+     })   
+
+    document.getElementById('add').addEventListener('click', function(event){
+        window.location.href = `add/${event.target.value}/`
+    })
+        //    
+        //     // window.location.href = `/buy/${event.target.value}/`
+        //     // ------------------------------
+
+
+    
+    
+    </script>
+</body>
+</html>
+
+
+
+        
+<!-- // document.getElementById('buy').addEventListener('click', function(event){
+    //     // Отправка GET-запроса на сервер для создания сессии
+    //     fetch(`/buy/${event.target.value}/`, {
+    //         method: 'GET'
+    //     })
+    //     .then(function(response){
+    //         return response.json();
+    //     })
+    //     .then(function(session){
+    //         // Перенаправление на Checkout-страницу
+    //         return stripe.redirectToCheckout({ sessionId: session.id })
+    //     })
+    //     .then(function(result) {
+    //         // Обработка результата после завершения оплаты (необязательно)
+    //         if (result.error) {
+    //             // Обработка ошибки
+    //             console.error(result.error.message);
+    //         } else {
+    //             // Успешное завершение оплаты
+    //             console.log('Payment succeeded:', result);
+    //         }
+    //     })
+    //     .catch(function(error){
+    //         // Обработка других ошибок
+    //         console.error('Error:', error);
+    //     });
+    // }); -->

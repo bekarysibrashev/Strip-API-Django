@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+{% for i in items %}
+    <div data-id="{{ i.id }}" onclick="info(this)">
+        <h1>{{ i.name }}</h1>
+        <p>{{ i.description }}</p>
+        <hr>
+        <h3>Price: {{ i.price }}</h3>
+    </div>
+{% endfor %}
+
+<script>
+
+function info(element){
+    var item_id = element.dataset.id
+    console.log('info')
+    console.log(item_id)
+    window.location.href = '/item/'+item_id+'/'
+}
+
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+
+
+</body>
+</html>
